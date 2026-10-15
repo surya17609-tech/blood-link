@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blood Link | Every Drop Matters</title>
+  <meta name="description" content="Blood Link connects blood donors with people in need.">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Leaflet CSS for OpenStreetMap -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+
+  <!-- TOP NAVIGATION -->
+  <header class="navbar">
+    <a href="#" class="logo nav-link" data-target="home-view">
+      <span class="logo-icon">♥</span> Blood<span>Link</span>
+    </a>
+
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
+
+    <!-- Dynamic Navbar Area -->
+    <nav id="navMenu">
+      <div id="navLinksContainer" class="nav-links-wrapper">
+        <a href="#" class="nav-link" data-target="home-view">Home</a>
+      </div>
+      <div id="navAuthArea" class="nav-auth-inline">
+        <a href="#" class="nav-link auth-trigger" data-mode="signup">Sign Up</a>
+        <a href="#" class="nav-link nav-button auth-trigger" data-mode="login">Log In</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- VIEW 1: LANDING START PAGE -->
+    <div id="home-view" class="page-view active">
+      <!-- 1. Hero Section -->
+      <section class="hero" id="home">
+        <div class="hero-content">
+          <div class="eyebrow"><span class="pulse"></span> CONNECTING LIVES, ONE DONATION AT A TIME</div>
+
+          <h1>Someone needs blood.<br>
+            <span>Be their hope.</span>
+          </h1>
+
+          <p>
+            Every second matters in an emergency.
+            Find donors, request blood, and help save lives
+            with Blood Link.
+          </p>
+
+          <div class="hero-actions">
+            <button class="btn btn-primary auth-trigger" data-mode="signup">Sign Up →</button>
+            <button class="btn btn-outline nav-link" data-target="about-view">About Us</button>
+            <button class="btn btn-outline auth-trigger" data-mode="login">Log In</button>
+          </div>
+
+          <div class="trust-note">♥ Every donor can make a difference.</div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="orb orb-one"></div>
+          <div class="orb orb-two"></div>
+          <div class="blood-symbol">♥</div>
+
+          <div class="floating-card card-top">
+            <span class="mini-icon">✚</span>
+            <div><strong>Every Drop Counts</strong><small>One donation can help save lives</small></div>
+          </div>
+
+          <div class="floating-card card-bottom">
+            <span class="online-dot"></span>
+            <div><strong>Be someone's hero</strong><small>Your kindness matters</small></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. Stats Bar -->
+      <section class="stats">
+        <div><strong>8</strong><span>Blood Groups</span></div>
+        <div><strong>1</strong><span>Shared Mission</span></div>
+        <div><strong>∞</strong><span>Hope We Can Give</span></div>
+      </section>
+
+      <!-- 3. Urgent Request Section -->
+      <section class="request-section" id="request">
+        <div class="request-copy">
+          <span class="eyebrow">URGENT? START HERE</span>
+          <h2>Someone's waiting.<br><span>Let's help them.</span></h2>
+          <p>Submit a blood request using the form. Requests are instantly processed across our network.</p>
+          <div class="request-point">♥ &nbsp; Clear request details</div>
+          <div class="request-point">♥ &nbsp; Simple request tracking</div>
+          <div class="request-point">♥ &nbsp; Designed for fast access</div>
+        </div>
+
+        <form class="request-form" id="requestForm">
+          <h3>Request Blood</h3>
+          <p>Enter the required details</p>
+
+          <label for="patientName">Requester name</label>
+          <input id="patientName" name="patientName" required maxlength="80" placeholder="Enter your name">
+
+          <label for="requestBloodGroup">Required blood group</label>
+          <select id="requestBloodGroup" name="bloodGroup" required>
+            <option value="">Select blood group</option>
+            <option>A+</option><option>A-</option>
+            <option>B+</option><option>B-</option>
+            <option>AB+</option><option>AB-</option>
+            <option>O+</option><option>O-</option>
+          </select>
+
+          <label for="hospital">Hospital or location</label>
+          <input id="hospital" name="hospital" required maxlength="150" placeholder="Hospital name or city">
+
+          <label for="urgency">Urgency</label>
+          <select id="urgency" name="urgency" required>
+            <option value="Standard">Standard</option>
+            <option value="Urgent">Urgent</option>
+            <option value="Emergency">Emergency</option>
+          </select>
+
+          <button type="submit" class="btn btn-primary full-width">Submit Request →</button>
+          <p id="formMessage" class="message" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <!-- 4. Verified Donors Directory -->
+      <section class="section how-section" id="donors-directory">
+        <div class="section-heading">
+          <span class="eyebrow">AVAILABLE DONORS</span>
+          <h2>Verified Donors by <span>Blood Group</span></h2>
+          <p>Explore active registered heroes ready to assist in emergencies.</p>
+        </div>
+
+        <div class="donor-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px;">
+          <div class="step" style="text-align:center;">
+            <div style="color:var(--red);">A+</div>
+            <h3>Rahul Sharma</h3>
+            <p>📍 Chennai · Available</p>
+          </div>
+          <div class="step" style="text-align:center;">
+            <div style="color:var(--red);">A-</div>
+            <h3>Priya Nair</h3>
+            <p>📍 Madurai · Available</p>
+          </div>
+          <div class="step" style="text-align:center;">
+            <div style="color:var(--red);">B+</div>
+            <h3>Karan Patel</h3>
+            <p>📍 Coimbatore · Available</p>
+          </div>
+          <div class="step" style="text-align:center;">
+            <div style="color:var(--red);">B-</div>
+            <h3>Sneha Roy</h3>
+            <p>📍 Tiruchirappalli · Available</p>
+          </div>
+          <div class="step" style="text-align:center;">
+            <div style="color:var(--red);">AB+</div>
+            <h3>Arun Kumar</h3>
+            <p>📍 Salem · Available</p>
+          </div>
+          <div class="step" style="text-align:center;">
+            <div style="color:var(--red);">AB-</div>
+            <h3>Divya Ramesh</h3>
+            <p>📍 Vellore · Available</p>
+          </div>
+          <div class="step" style="text-align:center;">
+            <div style="color:var(--red);">O+</div>
+            <h3>Surya Prakash</h3>
+            <p>📍 Perambalur · Available</p>
+          </div>
+          <div class="step" style="text-align:center;">
+            <div style="color:var(--red);">O-</div>
+            <h3>Ananya Sen</h3>
+            <p>📍 Erode · Available</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. How It Works Section -->
+      <section class="section how-section">
+        <div class="section-heading">
+          <span class="eyebrow">HOW IT WORKS</span>
+          <h2>Three steps. <span>One mission.</span></h2>
+        </div>
+
+        <div class="steps">
+          <article class="step"><div>01</div><h3>Find</h3><p>Choose the blood group and search the verified directory.</p></article>
+          <article class="step"><div>02</div><h3>Request</h3><p>Enter the emergency details for swift matching.</p></article>
+          <article class="step"><div>03</div><h3>Connect</h3><p>Connect securely with nearby willing donors.</p></article>
+        </div>
+      </section>
+    </div>
+
+    <!-- VIEW: ABOUT US -->
+    <div id="about-view" class="page-view">
+      <div class="about-hero-wrapper">
+        <span class="eyebrow"><span class="pulse"></span> ABOUT BLOOD LINK</span>
+        <h1>Every Drop <span>Connects a Life</span></h1>
+        <p class="about-lead">Connect verified blood requests with willing donors — quickly and privately.</p>
+
+        <div class="workflow-bar">
+          <div class="wf-title">OUR WORKFLOW</div>
+          <div class="wf-steps">
+            <span>Request</span> → <span>Review</span> → <span>Match</span> → <span>Notify</span> → <span>Confirm</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-content-wrapper">
+        <section class="about-card hero-card">
+          <div class="card-tag">01. OUR PURPOSE</div>
+          <h2>Building a clear, consent-based donor platform</h2>
+          <p>
+            Blood Link aims to connect people willing to donate blood with people searching for donors. In an emergency, finding the right donor should not depend on forwarded messages and endless phone calls. We are building one simple, consent-based place where a verified request can quickly reach nearby, willing donors — privately and securely.
+          </p>
+          <button class="btn btn-primary" onclick="document.getElementById('mission-section').scrollIntoView({behavior: 'smooth'})">Discover Our Mission ↓</button>
+        </section>
+
+        <section class="about-card">
+          <div class="card-tag">02. OUR STORY</div>
+          <h2>Why we created Blood Link</h2>
+          <p>
+            During an emergency, families contact people one by one through calls, WhatsApp groups, and social media. This takes time, creates confusion, and can expose private medical information. Donor details are scattered, availability is outdated, and there is no clear way to track if a request is open, matched, or completed.
+          </p>
+          <p>
+            Blood Link is our attempt to solve this with a structured workflow. We are a dedicated student team building a solution to make emergency donor coordination humane, organized, and efficient.
+          </p>
+        </section>
+
+        <section class="about-grid" id="mission-section">
+          <div class="grid-card">
+            <span class="mini-tag">OUR MISSION</span>
+            <h3>Easier & Private</h3>
+            <p>Make finding potential blood donors easier, while protecting privacy and reducing fraudulent requests.</p>
+          </div>
+          <div class="grid-card">
+            <span class="mini-tag">OUR VISION</span>
+            <h3>Connected Network</h3>
+            <p>A connected community ready to help — where no family feels alone when searching for a donor.</p>
+          </div>
+          <div class="grid-card">
+            <span class="mini-tag">OUR VALUES</span>
+            <h3>Core Principles</h3>
+            <p><strong>Trust, Privacy, Kindness, and Accessibility.</strong> We support coordination. Hospitals remain responsible for eligibility and transfusion decisions.</p>
+          </div>
+        </section>
+
+        <section class="about-card team-card">
+          <div class="card-tag">04. MEET THE TEAM</div>
+          <h2>Perambalur, Tamil Nadu, India</h2>
+          <div class="team-grid">
+            <div class="team-member">
+              <div class="role-icon">💻</div>
+              <h4>Frontend Developer</h4>
+              <p>React Native / UI Design</p>
+            </div>
+            <div class="team-member">
+              <div class="role-icon">⚙️</div>
+              <h4>Backend Developer</h4>
+              <p>Supabase / PostGIS / Matching Logic</p>
+            </div>
+            <div class="team-member">
+              <div class="role-icon">🤖</div>
+              <h4>AI Developer</h4>
+              <p>FAQ Chatbot & Verification Assistant</p>
+            </div>
+            <div class="team-member">
+              <div class="role-icon">🎤</div>
+              <h4>Presenter / Product</h4>
+              <p>Pitch & Product Research</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="about-card diff-card">
+          <div class="card-tag">05. WHAT MAKES BLOOD LINK DIFFERENT?</div>
+          <h2>Key Innovations</h2>
+          <div class="diff-grid">
+            <div class="diff-item">
+              <span class="check-icon">✓</span>
+              <div>
+                <strong>Smart Donor Matching</strong>
+                <p>Filters donors by blood group, approximate distance, and real-time availability.</p>
+              </div>
+            </div>
+            <div class="diff-item">
+              <span class="check-icon">✓</span>
+              <div>
+                <strong>Location-Based Discovery</strong>
+                <p>Find opt-in donors near the hospital location without exposing exact live GPS.</p>
+              </div>
+            </div>
+            <div class="diff-item">
+              <span class="check-icon">✓</span>
+              <div>
+                <strong>Urgent Blood Request Notifications</strong>
+                <p>Eligible donors receive immediate alerts after request verification.</p>
+              </div>
+            </div>
+            <div class="diff-item">
+              <span class="check-icon">✓</span>
+              <div>
+                <strong>Personal Donation & Request Tracking</strong>
+                <p>Track your request status from Open → Reviewed → Matched → Accepted → Fulfilled.</p>
+              </div>
+            </div>
+            <div class="diff-item">
+              <span class="check-icon">✓</span>
+              <div>
+                <strong>Verified Requests</strong>
+                <p>Supporting medical documents reviewed privately by authorized personnel.</p>
+              </div>
+            </div>
+            <div class="diff-item">
+              <span class="check-icon">✓</span>
+              <div>
+                <strong>Consent-Based Contact Sharing</strong>
+                <p>Phone numbers remain hidden until a donor explicitly accepts a match.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- VIEW: SIGN UP / LOG IN AUTH PAGE -->
+    <div id="signup-view" class="page-view">
+      <div class="form-container-wrapper">
+        <form class="request-form signup-box" id="signupForm">
+          <h3 id="authFormTitle">Create Your Account</h3>
+          <p id="authFormSubtitle">Please enter your details to sign up</p>
+
+          <div id="signUpExtraFields">
+            <label for="fullName">Full Name</label>
+            <input id="fullName" name="fullName" maxlength="80" placeholder="e.g. John Doe">
+
+            <label for="age">Age</label>
+            <input id="age" name="age" type="number" min="18" max="100" placeholder="e.g. 25">
+
+            <label for="regBloodGroup">Blood Group (All 8 Types Supported)</label>
+            <select id="regBloodGroup" name="regBloodGroup">
+              <option value="">Select your blood group</option>
+              <option value="A+">A+ (Example: Can donate to A+, AB+)</option>
+              <option value="A-">A- (Example: Can donate to A+, A-, AB+, AB-)</option>
+              <option value="B+">B+ (Example: Can donate to B+, AB+)</option>
+              <option value="B-">B- (Example: Can donate to B+, B-, AB+, AB-)</option>
+              <option value="AB+">AB+ (Universal Plasma Recipient)</option>
+              <option value="AB-">AB- (Rare recipient group)</option>
+              <option value="O+">O+ (Most common blood type)</option>
+              <option value="O-">O- (Universal Red Cell Donor)</option>
+            </select>
+          </div>
+
+          <label for="phoneNum">Phone Number</label>
+          <div class="otp-row">
+            <input id="phoneNum" name="phoneNum" type="tel" required placeholder="10-digit mobile number">
+            <button type="button" class="btn btn-outline" id="sendOtpBtn">Send OTP</button>
+          </div>
+
+          <div id="otpSection" class="hidden-group">
+            <label for="otpInput">Enter OTP Code</label>
+            <input id="otpInput" name="otpInput" type="text" maxlength="6" placeholder="Enter 6-digit code">
+            <small class="otp-hint" id="otpHint"></small>
+          </div>
+
+          <div id="addressFieldWrapper">
+            <label for="address">Address</label>
+            <input id="address" name="address" maxlength="150" placeholder="e.g. Salem, Tamil Nadu">
+          </div>
+
+          <button type="submit" class="btn btn-primary full-width" id="authSubmitBtn">Continue →</button>
+          <p id="signupMessage" class="message" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+
+    <!-- VIEW: WELCOME DASHBOARD PAGE -->
+    <div id="dashboard-view" class="page-view">
+      <div class="dashboard-hero">
+        <div class="dashboard-card">
+          <span class="eyebrow">SUCCESSFULLY REGISTERED</span>
+          <h2 id="userWelcomeTitle">Welcome to Blood Link!</h2>
+          <p>Your account is verified. You are now part of our life-saving community.</p>
+          <div class="dashboard-actions">
+            <button class="btn btn-primary nav-link" data-target="map-view">Explore Live Map →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW: MAP PAGE -->
+    <div id="map-view" class="page-view">
+      <div class="map-container-wrapper" style="padding: 50px 8%; min-height: calc(100vh - 78px - 100px);">
+        <div class="map-header">
+          <span class="eyebrow">LIVE OPENSTREETMAP DIRECTORY</span>
+          <h2>All Hospitals & Blood Banks <span>Worldwide</span></h2>
+          <p>Pan or zoom around the world to load every hospital and blood bank instantly.</p>
+        </div>
+        <div class="map-box" id="googleMap"></div>
+      </div>
+    </div>
+
+    <!-- VIEW: REQUEST PAGE -->
+    <div id="request-page-view" class="page-view" style="position: relative;">
+      <div class="form-container-wrapper" style="flex-direction: column; align-items: stretch; justify-content: flex-start; min-height: calc(100vh - 78px - 100px); padding: 40px 8%;">
+
+        <div class="section-heading" style="margin-top: 10px; margin-bottom: 25px;">
+          <span class="eyebrow">YOUR EMERGENCY REQUESTS</span>
+          <h2>Manage Your Blood <span>Requirements</span></h2>
+          <p>Requests you have posted are shown here. You can edit or delete them anytime.</p>
+        </div>
+
+        <div id="userRequestsFeedList" class="requests-grid">
+          <!-- Dynamically populated user requests appear here -->
+        </div>
+
+        <div id="noUserRequestsNotice" style="text-align: center; color: var(--muted); padding: 40px 0; font-size: 15px;">
+          You haven't posted any emergency requests yet. Tap the '+' button below to create one!
+        </div>
+
+      </div>
+
+      <!-- FLOATING ACTION BUTTON ('+') ON REQUEST PAGE -->
+      <button class="floating-add-btn nav-link" data-target="create-request-view" title="Create Emergency Blood Request">+</button>
+    </div>
+
+    <!-- VIEW: CREATE / EDIT EMERGENCY REQUEST FORM PAGE -->
+    <div id="create-request-view" class="page-view">
+      <div class="form-container-wrapper">
+        <form class="request-form signup-box" id="newBloodReqForm">
+          <span class="eyebrow" style="color: var(--red);" id="reqFormEyebrow">NEW REQUEST</span>
+          <h3 style="margin-top: 5px;" id="reqFormTitle">Post Blood Need</h3>
+          <p>Please fill out patient & hospital details</p>
+
+          <input type="hidden" id="editRequestIndex" value="">
+
+          <label for="newReqName">Patient / Requester Name</label>
+          <input id="newReqName" name="newReqName" required maxlength="80" placeholder="e.g. Ramesh Kumar">
+
+          <label for="newReqPhone">Phone Number</label>
+          <input id="newReqPhone" name="newReqPhone" type="tel" required placeholder="10-digit phone number">
+
+          <label for="newReqBloodType">Blood Type Needed</label>
+          <select id="newReqBloodType" name="newReqBloodType" required>
+            <option value="">Select blood type</option>
+            <option>A+</option><option>A-</option>
+            <option>B+</option><option>B-</option>
+            <option>AB+</option><option>AB-</option>
+            <option>O+</option><option>O-</option>
+          </select>
+
+          <label for="newReqUnits">Units Wanted</label>
+          <input id="newReqUnits" name="newReqUnits" type="number" min="1" max="10" required placeholder="Number of units (e.g. 2)">
+
+          <label for="newReqHospital">Hospital Currently In</label>
+          <input id="newReqHospital" name="newReqHospital" required maxlength="150" placeholder="e.g. Apollo Hospital, Trichy">
+
+          <label for="newReqDistrict">District / Area</label>
+          <input id="newReqDistrict" name="newReqDistrict" required maxlength="100" placeholder="e.g. Cantonment, Trichy">
+
+          <label for="newReqDistance">Approximate Distance to Donors (km)</label>
+          <input id="newReqDistance" name="newReqDistance" type="text" placeholder="e.g. Within 5 km">
+
+          <button type="submit" class="btn btn-primary full-width" style="margin-top: 20px;" id="reqSubmitBtnText">Post Request →</button>
+          <p id="newReqMessage" class="message" aria-live="polite" style="margin-top: 10px;"></p>
+        </form>
+      </div>
+    </div>
+
+    <!-- VIEW: DONATE PAGE -->
+    <div id="donate-view" class="page-view">
+      <div class="form-container-wrapper" style="flex-direction: column; align-items: stretch; justify-content: flex-start; min-height: calc(100vh - 78px - 100px); padding: 40px 8%;">
+
+        <div class="section-heading" style="margin-top: 10px; margin-bottom: 20px;">
+          <span class="eyebrow">COMMUNITY DONATE FEED</span>
+          <h2>Active Blood <span>Requests</span></h2>
+          <p>Review requests posted by members and help save lives.</p>
+        </div>
+
+        <!-- SEARCH AND FILTER BAR -->
+        <div class="search-filter-container">
+          <div class="search-input-wrap">
+            <input type="text" id="donateSearchInput" placeholder="Search by name, blood type, district...">
+          </div>
+          <select id="donateFilterDropdown" class="btn btn-outline" style="font-size: 13px; cursor: pointer; padding: 12px 16px;">
+            <option value="ALL">Filter by: All Blood Groups</option>
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+          </select>
+        </div>
+
+        <div id="donateFeedContainer" style="display: flex; flex-direction: column; gap: 20px; width: 100%; max-width: 800px; margin: 0 auto 50px;">
+
+          <div class="signup-box donate-patient-card" data-name="ramesh kumar" data-blood="o+" data-district="trichy" style="max-width: 100%;">
+            <span class="eyebrow" style="color: var(--red);">URGENT REQUEST</span>
+            <h3 style="margin: 8px 0 10px;">Patient: Ramesh Kumar</h3>
+            <p style="font-size: 14px; color: #444; margin-bottom: 6px;">🩸 Blood type needed: <strong>O+</strong> &nbsp;|&nbsp; 📦 Units: <strong>2</strong></p>
+            <p style="font-size: 13px; color: var(--muted); margin-bottom: 4px;">🏥 Hospital: Apollo Hospital, Trichy</p>
+            <p style="font-size: 13px; color: var(--muted); margin-bottom: 4px;">📍 Address: Cantonment, Trichy</p>
+            <p style="font-size: 13px; color: var(--black); margin-top: 6px;">📞 Phone: 9876543210</p>
+            <button class="btn btn-primary accept-donate-btn" style="margin-top: 15px; width: 100%;">Accept Request</button>
+          </div>
+
+          <div class="signup-box donate-patient-card" data-name="priya nair" data-blood="o-" data-district="chennai" style="max-width: 100%;">
+            <span class="eyebrow" style="color: var(--red);">EMERGENCY REQUEST</span>
+            <h3 style="margin: 8px 0 10px;">Patient: Priya Nair</h3>
+            <p style="font-size: 14px; color: #444; margin-bottom: 6px;">🩸 Blood type needed: <strong>O-</strong> &nbsp;|&nbsp; 📦 Units: <strong>1</strong></p>
+            <p style="font-size: 13px; color: var(--muted); margin-bottom: 4px;">🏥 Hospital: Rajiv Gandhi Government General Hospital, Chennai</p>
+            <p style="font-size: 13px; color: var(--muted); margin-bottom: 4px;">📍 Address: Park Town, Chennai</p>
+            <p style="font-size: 13px; color: var(--black); margin-top: 6px;">📞 Phone: 9123456789</p>
+            <button class="btn btn-primary accept-donate-btn" style="margin-top: 15px; width: 100%;">Accept Request</button>
+          </div>
+
+          <div class="signup-box donate-patient-card" data-name="rahul sharma" data-blood="a+" data-district="madurai" style="max-width: 100%;">
+            <span class="eyebrow" style="color: var(--red);">URGENT REQUEST</span>
+            <h3 style="margin: 8px 0 10px;">Patient: Rahul Sharma</h3>
+            <p style="font-size: 14px; color: #444; margin-bottom: 6px;">🩸 Blood type needed: <strong>A+</strong> &nbsp;|&nbsp; 📦 Units: <strong>3</strong></p>
+            <p style="font-size: 13px; color: var(--muted); margin-bottom: 4px;">🏥 Hospital: Meenakshi Mission Hospital, Madurai</p>
+            <p style="font-size: 13px; color: var(--muted); margin-bottom: 4px;">📍 Address: Lake Area, Melur Road, Madurai</p>
+            <p style="font-size: 13px; color: var(--black); margin-top: 6px;">📞 Phone: 9988776655</p>
+            <button class="btn btn-primary accept-donate-btn" style="margin-top: 15px; width: 100%;">Accept Request</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW: ADVANCED AI HEALTH ASSISTANT ("BLOOD") -->
+    <div id="ask-blood-view" class="page-view">
+      <div class="form-container-wrapper" style="padding: 30px 5%; min-height: calc(100vh - 78px - 100px);">
+        <div class="chatbot-container">
+          <div class="chatbot-header">
+            <div class="bot-avatar">♥</div>
+            <div style="flex: 1;">
+              <h3>Blood — Advanced AI Health Assistant</h3>
+              <p id="botStatusSubtitle" style="color: #26aa70; font-weight: bold;">Gemini Live API Active ✓</p>
+            </div>
+            <button id="toggleKeyModalBtn" style="background: none; border: none; font-size: 20px; cursor: pointer;" title="Configure Gemini API Key">⚙️</button>
+          </div>
+
+          <div id="apiKeyBar" class="hidden-group" style="padding: 12px 20px; background: #fff0f1; border-bottom: 1px solid var(--border); display: flex; gap: 10px; align-items: center;">
+            <input type="password" id="geminiApiKeyInput" placeholder="Paste Google Gemini API Key here..." style="flex: 1; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px;">
+            <button type="button" class="btn btn-primary btn-sm" id="saveApiKeyBtn">Save Key</button>
+          </div>
+
+          <div class="chatbot-messages" id="chatMessages">
+            <div class="chat-msg bot-msg">
+              Hello! I'm <strong>Blood</strong>, your AI health assistant. I am connected live to Gemini AI. Ask me anything about blood compatibility, donor guidelines, or medical questions!
+            </div>
+          </div>
+
+          <form class="chatbot-input-area" id="chatForm">
+            <input type="text" id="chatInput" placeholder="Ask Blood anything..." required autocomplete="off">
+            <button type="submit" class="btn btn-primary">Send</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <a href="#" class="logo nav-link" data-target="home-view"><span class="logo-icon">♥</span> Blood<span>Link</span></a>
+    <p>Connecting donors. Supporting lives.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
