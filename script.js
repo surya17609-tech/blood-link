@@ -6,7 +6,7 @@ let isLoggedIn = false;
 let hospitalMarkersLayer = null;
 
 let userRequests = [];
-let storedGeminiApiKey = "AQ.Ab8RN6I-sunkGYKXGhhQdZyrYqnuWR9GExuDs6W6fRqooDbCUw";
+let storedGeminiApiKey = "";
 
 let bloodChatHistory = [
   { role: "assistant", content: "Hello! I'm <strong>Blood</strong>, your AI health assistant. I am connected live to Gemini AI. Ask me anything about blood compatibility, donor guidelines, or medical questions!" }
